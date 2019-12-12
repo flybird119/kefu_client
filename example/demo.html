@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mini IM demo</title>
+    <style>
+        body{
+            overflow: hidden;
+            background-color: #f2f2f2;
+        }
+        .title{
+            position: absolute;
+            top: 30px;
+            left:0; right:0;
+            margin: 0 auto;
+            color: #666;
+            text-align: center;
+            font-size: 60px;
+        }
+        .mini-im{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 20px;
+            box-sizing: border-box;
+        }
+        button{
+            width: 100px;
+            height: 35px;
+            border-radius: 3px;
+            margin: 0 10px;
+            cursor: pointer;
+            outline: none;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+        button:hover{
+            border: 1px solid #1898fc;
+        }
+        .mini-im-m{
+            width: 350px;
+            height: 500px;
+            position: absolute;
+            top: 120px;
+            left:0; right:0;
+            margin: 0 auto;
+            box-shadow: 1px 1px 8px 2px rgba(204, 204, 204, 0.61);
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="title">Mini IM</div>
+
+    <div class="mini-im-m" id="miniIMiFrameBox">
+        <iframe id="miniIMiFrame" height="100%" width="100%" frameborder="0"></iframe>
+    </div>
+
+    <div class="mini-im">
+        <button onclick="verticalScreen()">移动端坚屏</button>
+        <button onclick="horizontalScreen()">横屏PAD</button>
+        <button onclick="show()">展开PC客服</button>
+        <button onclick="hide()">收起PC客服</button>
+    </div>
+
+
+    
+</body>
+</html>
+<script src="./mini_im.js"></script>
+<script>
+
+/** ---------------------------PC端---------------------- **/
+
+// 初始化PC MiniIM
+var MiniIMPC  = MiniIM.init({
+    url: "http://192.168.50.52:8081",
+    isShowPcBar: true,// 是否显示PC右下角的bar
+    platform: 3,      // 平台
+    isHeader: 0,      // 移动端是否显示header（PC端强制不显示）
+    isMobile: 0,      // 是否是移动端
+    userAccount: 10285,   // 会话用户账号
+    uid: 0,           // 业务平台的ID
+})
+
+// 显示窗口
+function show(){
+    MiniIMPC.showChatWindow()
+}
+
+// 隐藏窗口
+function hide(){
+    MiniIMPC.hideChatWindow()
+}
+
+
+
+
+/** ---------------------------M端---------------------- **/
+
+// 初始化M端 MiniIM
+var MiniIMMB = MiniIM.init({
+    url: "http://192.168.50.52:8081",
+    platform: 5,      // 平台
+    isHeader: 1,      // 移动端是否显示header
+    isMobile: 1,      // 是否是移动端
+    userAccount: 10286,   // 会话用户账号
+    uid: 0,           // 业务平台的ID
+})
+
+// iFrame
+var miniIMiFrame = document.getElementById("miniIMiFrame")
+miniIMiFrame.src = MiniIMMB.createLink()
+var miniIMiFrameBox = document.getElementById("miniIMiFrameBox")
+
+// 坚屏
+function verticalScreen(){
+    miniIMiFrameBox.style.width = "350px"
+    miniIMiFrameBox.style.height = "500px"
+}
+// 横屏
+function horizontalScreen(){
+    miniIMiFrameBox.style.height = "400px"
+    miniIMiFrameBox.style.width = "700px"
+}
+
+
+</script>
