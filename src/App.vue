@@ -331,6 +331,7 @@ export default {
          tab: true,
          scrollY: true,
          scrollbar: true,
+         bounceTime: 400,
          preventDefaultException: {className:/(^|\s)text(\s|$)/},
          mouseWheel: true
        })
@@ -634,7 +635,7 @@ export default {
       setTimeout(()=>{
         var lis = this.$refs.miniImBody.querySelectorAll("li")
         this.scroll && this.scroll.scrollToElement(lis[lis.length-1])
-      }, 100)
+      }, 50)
     },
     // input获得焦点
     chatInputFocus(){
