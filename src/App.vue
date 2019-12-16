@@ -567,6 +567,7 @@ export default {
       var localMessage
       const fileName = parseInt(Math.random() * 10000 * new Date().getTime()) + file.name.substr(file.name.lastIndexOf('.'))
       imgFile.onload = function(){
+
         localMessage = self.$mimcInstance.createLocalMessage("photo", self.account, this.result)
         localMessage["percent"] = 0
         localMessage.isShowCancel = true
@@ -579,43 +580,13 @@ export default {
         self.messagesPushMemoryAndLocalStoreSave(cacheMsg, false)
         self.$previewRefresh()
         self.scrollIntoBottom()
-        var observer = {
-          next: function(res){
-            localMessage.percent = Math.ceil(res.total.percent);
-            if(res.total.size < 1){
-              self.qiniuObservable.unsubscribe()
-              self.cancelMessage(localMessage.key);
-              Toast({
-                message: "上传失败，该图片已损坏！"
-              })
-            }
-          },
-          error:function(err){
-            if(self.uid == 3743253 || self.uid == 4661374){
-              alert(err.code)
-              alert(err.reqId)
-              alert(err.message)
-            }
-            localMessage.percent = 0
-            self.qiniuObservable= null
-            self.removeMessage(self.userInfo.id, localMessage.key)
-            Toast({
-              message: "上传失败，请重新上传！"
-            })
-            const IM = self.$mimcInstance
-            var message = IM.createLocalMessage("system", self.account, "您刚刚上传的图片失败了，请重新上传！")
-            self.messages.push(self.handlerMessage(message))
-            self.scrollIntoBottom()
-          },
-          complete: function(res){
-              self.qiniuObservable= null
-            localMessage.percent = 100
-            var imgUrl = self.uploadToken.host + "/" + res.key
-            self.$mimcInstance.sendMessage("photo", self.account, imgUrl)
-          }
+
+        // 系统内置
+        if(self.uploadToken.mode == 1) {
+          console.log(1)
         }
         // 七牛云
-        if(self.uploadToken.mode == 1){
+        else if(self.uploadToken.mode == 2){
           let options = {
             quality: 0.92,
             noCompressIfLarger: true,
@@ -625,9 +596,45 @@ export default {
             const observable = qiniu.upload(data.dist, fileName, self.uploadToken.secret, {}, {
                mimeType: null
             })
-            self.qiniuObservable = observable.subscribe(observer)
+            self.qiniuObservable = observable.subscribe({
+              next: function(res){
+                localMessage.percent = Math.ceil(res.total.percent);
+                if(res.total.size < 1){
+                  self.qiniuObservable.unsubscribe()
+                  self.cancelMessage(localMessage.key);
+                  Toast({
+                    message: "上传失败，该图片已损坏！"
+                  })
+                }
+              },
+              error:function(err){
+                if(self.uid == 3743253 || self.uid == 4661374){
+                  alert(err.code)
+                  alert(err.reqId)
+                  alert(err.message)
+                }
+                localMessage.percent = 0
+                self.qiniuObservable= null
+                self.removeMessage(self.userInfo.id, localMessage.key)
+                Toast({
+                  message: "上传失败，请重新上传！"
+                })
+                const IM = self.$mimcInstance
+                var message = IM.createLocalMessage("system", self.account, "您刚刚上传的图片失败了，请重新上传！")
+                self.messages.push(self.handlerMessage(message))
+                self.scrollIntoBottom()
+              },
+              complete: function(res){
+                  self.qiniuObservable= null
+                localMessage.percent = 100
+                var imgUrl = self.uploadToken.host + "/" + res.key
+                self.$mimcInstance.sendMessage("photo", self.account, imgUrl)
+              }
+            })
           })
         }
+
+
       }
     },
     // 滚动条置底
@@ -664,12 +671,8 @@ export default {
     // 获取上传配置
     getUploadSecret(){
       return axios.get('/public/secret')
-        .then(response => {
-            this.uploadToken = response.data.data
-        }).catch((error)=>{
-          Toast({
-            message: error.response.data.message
-          })
+      .then(response => {
+          this.uploadToken = response.data.data
       })
     },
     // 获取公司信息
@@ -685,7 +688,7 @@ export default {
     },
     // 发起并发请求
     getAllhttp(){
-      axios.all([this.getRobot(), this.getUploadSecret(), this.getCompanyInfo()])
+      axios.all([this.getRobot(), this.getCompanyInfo(), this.getUploadSecret()])
       .then(axios.spread(() => {
         // 初始化MIMC
         this.initMimc()

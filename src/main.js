@@ -11,7 +11,7 @@ var moment = require('moment');
 moment.locale("zh-cn", momentLocal)
 
 import axios from 'axios'
-axios.defaults.baseURL = 'https://im.cmp520.com/v1'
+axios.defaults.baseURL = 'http://localhost:8080/v1'
 
 var options={
   clickToCloseNonZoomable: false,
