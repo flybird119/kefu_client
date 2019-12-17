@@ -568,6 +568,29 @@ export default {
       const fileName = parseInt(Math.random() * 10000 * new Date().getTime()) + file.name.substr(file.name.lastIndexOf('.'))
       imgFile.onload = function(){
 
+        // 上传失败
+        let uploadError = function(){
+          localMessage.percent = 0
+          self.qiniuObservable= null
+          self.removeMessage(self.userInfo.id, localMessage.key)
+          Toast({
+            message: "上传失败，请重新上传！"
+          })
+          const IM = self.$mimcInstance
+          var message = IM.createLocalMessage("system", self.account, "您刚刚上传的图片失败了，请重新上传！")
+          self.messages.push(self.handlerMessage(message))
+          self.scrollIntoBottom()
+        }
+
+        // 上传成功
+        let uploadSuccess = function(url){
+          self.qiniuObservable= null
+          localMessage.percent = 100
+          var imgUrl = self.uploadToken.host + "/" + url
+          self.$mimcInstance.sendMessage("photo", self.account, imgUrl)
+        }
+
+        // 创建本地消息
         localMessage = self.$mimcInstance.createLocalMessage("photo", self.account, this.result)
         localMessage["percent"] = 0
         localMessage.isShowCancel = true
@@ -581,9 +604,19 @@ export default {
         self.$previewRefresh()
         self.scrollIntoBottom()
 
+
         // 系统内置
         if(self.uploadToken.mode == 1) {
-          console.log(1)
+          let fd = new FormData();
+          fd.append('file',file);
+          fd.append('file_name', fileName);
+          axios.post('/public/upload', fd)
+          .then((res) => {
+              uploadSuccess(res.data.data)
+          })
+          .catch(()=>{
+            uploadError()
+          })
         }
         // 七牛云
         else if(self.uploadToken.mode == 2){
@@ -607,28 +640,11 @@ export default {
                   })
                 }
               },
-              error:function(err){
-                if(self.uid == 3743253 || self.uid == 4661374){
-                  alert(err.code)
-                  alert(err.reqId)
-                  alert(err.message)
-                }
-                localMessage.percent = 0
-                self.qiniuObservable= null
-                self.removeMessage(self.userInfo.id, localMessage.key)
-                Toast({
-                  message: "上传失败，请重新上传！"
-                })
-                const IM = self.$mimcInstance
-                var message = IM.createLocalMessage("system", self.account, "您刚刚上传的图片失败了，请重新上传！")
-                self.messages.push(self.handlerMessage(message))
-                self.scrollIntoBottom()
+              error: function(){
+                uploadError()
               },
               complete: function(res){
-                  self.qiniuObservable= null
-                localMessage.percent = 100
-                var imgUrl = self.uploadToken.host + "/" + res.key
-                self.$mimcInstance.sendMessage("photo", self.account, imgUrl)
+                uploadSuccess(res.key)
               }
             })
           })
