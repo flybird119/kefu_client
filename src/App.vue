@@ -395,9 +395,11 @@ export default {
     },
     // 根据IP获取用户地理位置
     getLocal(){
-      axios.get("https://restapi.amap.com/v3/ip?key=73ef1dc5c5ea086e7330b95aede42953")
+      var APPKey = "" // 高德地图web应用key
+      axios.get("https://restapi.amap.com/v3/ip?key=" + APPKey)
       .then(response => {
             if(response.data.province){
+              console.log(response.data.province + response.data.city)
                this.userLocal = response.data.province + response.data.city
             }
         }).catch((error)=>{
