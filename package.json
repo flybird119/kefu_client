@@ -13,7 +13,6 @@
     "core-js": "^2.6.5",
     "mint-ui": "^2.2.13",
     "moment": "^2.24.0",
-    "push.js": "^1.0.12",
     "qiniu-js": "^2.5.5",
     "vue": "^2.6.10",
     "vue-photo-preview": "git+https://github.com/chenxianqi/vue-photo-preview.git",
