@@ -1430,13 +1430,14 @@ export default {
             border-radius 3px
             font-size 14px
             color #333
-            max-width 75%
+            max-width 85%
             position relative
             box-shadow  1px 2px 2px 0px rgba(0, 0, 0, 0.1)
             -webkit-user-select:text;
             -moz-user-select:text;
             -o-user-select:text;
             user-select:text;
+            word-break break-all
             &:before{
               content  ''
               display block
@@ -1537,6 +1538,7 @@ export default {
             -moz-user-select:text;
             -o-user-select:text;
             user-select:text;
+            word-break:break-all;
             &:before{
               left inherit
               right -9px
