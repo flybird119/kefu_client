@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Mini IM demo</title>
+    <title>在线客服 demo</title>
     <style>
         body{
             overflow: hidden;
@@ -56,7 +56,7 @@
 </head>
 <body>
 
-    <div class="title">Mini IM</div>
+    <div class="title">在线客服 DEMO</div>
 
     <div class="mini-im-m" id="miniIMiFrameBox">
         <iframe id="miniIMiFrame" height="100%" width="100%" frameborder="0"></iframe>
@@ -78,14 +78,14 @@
 
 /** ---------------------------PC端---------------------- **/
 
-// 初始化PC MiniIM
+// 初始化PC 在线客服
 var MiniIMPC  = MiniIM.init({
-    url: "http://192.168.50.52:8081",
+    url: "http://kf.aissz.com:666",
     isShowPcBar: true,// 是否显示PC右下角的bar
     platform: 3,      // 平台
     isHeader: 0,      // 移动端是否显示header（PC端强制不显示）
     isMobile: 0,      // 是否是移动端
-    userAccount: 10285,   // 会话用户账号
+    userAccount: 10000,   // 会话用户账号
     uid: 0,           // 业务平台的ID
 })
 
@@ -104,13 +104,13 @@ function hide(){
 
 /** ---------------------------M端---------------------- **/
 
-// 初始化M端 MiniIM
+// 初始化M端 在线客服
 var MiniIMMB = MiniIM.init({
-    url: "http://192.168.50.52:8081",
+    url: "http://kf.aissz.com:666",
     platform: 5,      // 平台
     isHeader: 1,      // 移动端是否显示header
     isMobile: 1,      // 是否是移动端
-    userAccount: 10286,   // 会话用户账号
+    userAccount: 10001,   // 会话用户账号
     uid: 0,           // 业务平台的ID
 })
 

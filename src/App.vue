@@ -75,7 +75,8 @@
                   <template v-if="item.biz_type == 'photo'">
                     <div class="photo">
                       <span v-if="item.percent && item.percent != 100">上传中{{item.percent}}%</span>
-                      <img :src="item.payload" preview="1" />
+                      <img v-if="isMobile" :src="item.payload" preview="1" />
+                      <img v-else @click="clickPhoto(item.payload)" :src="item.payload" />
                     </div>
                   </template>
 
@@ -494,6 +495,19 @@ export default {
     // 是否显示用户头像信息（系统消息隐藏）
     isShowInfo(biz_type){
      return ['end', 'transfer', 'cancel', 'timeout', "system"].indexOf(biz_type) == -1
+    },
+    // 点击图片
+    clickPhoto(url){
+      if(url.indexOf("http") == -1){
+        let img = new Image();
+        img.src = url;
+        const newWin = window.open("", "_blank");
+        newWin.document.write(img.outerHTML);
+        newWin.document.title = "图片"
+        newWin.document.close();
+      }else{
+        window.open(url);
+      }
     },
     // 上报最后活动时间
     upLastActivity(){
@@ -1159,6 +1173,7 @@ export default {
         z-index 99
         img{
           width 22px
+          
         }
         input{
           width 100%
@@ -1462,6 +1477,7 @@ export default {
               width 120px
               display block
               border-radius 5px
+              cursor: pointer;
             }
             span{
               font-size 12px
