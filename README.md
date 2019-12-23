@@ -34,7 +34,7 @@
 ```
 
 ## mini_im.js 工具
-
+GO》》》》》[Example][5]
     mini_im 工具是帮助其在PC端以及其他小程序，创建IM账户连接提供的相关函数，具体使用见example目录demo
 
 
@@ -52,3 +52,4 @@ npm add webpack@latest  OK
   [2]: https://github.com/chenxianqi/kefu_admin
   [3]: https://github.com/chenxianqi/kefu_client
   [4]: https://github.com/chenxianqi/kefu_flutter
+  [5]: http://kf.aissz.com:666/example/
