@@ -880,6 +880,7 @@ export default {
           if(messages.length < pageSize) this.isLoadMorEnd = true;
           if(this.messages.length == 0 && messages.length > 0){
             this.messages = response.data.data.list.map((i) => this.handlerMessage(i))
+            this.scrollIntoBottom()
           }else if(messages.length > 0){
             messages = messages.map((i) => this.handlerMessage(i))
             this.messages = messages.concat(this.messages)
