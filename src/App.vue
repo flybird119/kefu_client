@@ -601,7 +601,6 @@ export default {
         self.messages.push(self.handlerMessage(localMessage))
         var cacheMsg = Object.assign({}, localMessage)
         cacheMsg.payload = self.uploadToken.host + "/" + fileName
-        self.messagesPushMemoryAndLocalStoreSave(cacheMsg, false)
         self.$previewRefresh()
         self.scrollIntoBottom()
 
@@ -754,7 +753,7 @@ export default {
         return
       }
 
-      this.messagesPushMemoryAndLocalStoreSave(message)
+      this.messagesPushMemory(message)
       this.scrollIntoBottom()
       this.$previewRefresh()
       window.parent.postMessage({newMessage: 1},'*')
@@ -796,7 +795,7 @@ export default {
       const message = IM.sendMessage("text", this.account, chatValue)
       message.isShowCancel = true
       setTimeout(() => message.isShowCancel = false, 10000)
-      this.messagesPushMemoryAndLocalStoreSave(message)
+      this.messagesPushMemory(message)
       this.chatValue = ""
       this.handshakeKeywordList = []
     },
@@ -804,7 +803,7 @@ export default {
     cancelMessage(key){
       const IM = this.$mimcInstance
       const message = IM.sendMessage("cancel", this.account, key)
-      this.messagesPushMemoryAndLocalStoreSave(message)
+      this.messagesPushMemory(message)
       this.removeMessage(this.userInfo.id, key)
       if(this.qiniuObservable) this.qiniuObservable.unsubscribe()
     },
@@ -813,7 +812,7 @@ export default {
       this.handshakeKeywordList = []
       const IM = this.$mimcInstance
       const message = IM.sendMessage("text", this.account, content)
-      this.messagesPushMemoryAndLocalStoreSave(message)
+      this.messagesPushMemory(message)
       this.chatValue = ""
     },
     // 点击head右边按钮
@@ -825,7 +824,7 @@ export default {
         MessageBox.confirm('您确定关闭此次会话吗?', "温馨提示! ")
         .then(() => {
           const message = IM.sendMessage("end", this.account, "")
-          this.messagesPushMemoryAndLocalStoreSave(message)
+          this.messagesPushMemory(message)
           this.isArtificial = false
           this.artificialAccount = null
         })
@@ -833,22 +832,14 @@ export default {
         return
       }
       const message = IM.sendMessage("text", this.account, "人工")
-      this.messagesPushMemoryAndLocalStoreSave(message)
+      this.messagesPushMemory(message)
       setTimeout( () => window.isClickHeadRightBtn = false, 3000)
 
     },
-    // 消息处理，本地缓存Memory storage
-    messagesPushMemoryAndLocalStoreSave(msg, isPushMemory = true){
+    // 消息处理Memory storage
+    messagesPushMemory(msg){
       if(msg.biz_type == 'pong' || msg.biz_type == "handshake" || msg.biz_type == "into") return;
-      if(isPushMemory) this.messages.push(this.handlerMessage(msg))
-      if(msg.biz_type == 'welcome') return;
-      let _messages = []
-      let messageRecord = localStorage.getItem("miniImAppMessageRecord_" + this.userInfo.id)
-      if(messageRecord){
-        _messages = JSON.parse(messageRecord)
-      }
-      _messages.push(this.handlerMessage(msg))
-      localStorage.setItem("miniImAppMessageRecord_" + this.userInfo.id, JSON.stringify(_messages))
+      this.messages.push(this.handlerMessage(msg))
       this.scrollIntoBottom()
     },
     // 处理头像昵称
