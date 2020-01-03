@@ -362,6 +362,7 @@
     </div>
 
     <div class="mini-im">
+        <button onclick="goToClinet()">客服工作台</button>
         <button onclick="hiddenHeadder()">隐藏Header</button>
         <button onclick="showHeadder()">显示Header</button>
         <button onclick="verticalScreen()">移动端坚屏</button>
@@ -446,6 +447,11 @@ function hiddenHeadder(){
 function showHeadder(){
     miniIMiFrame.src = miniIMiFrame.src.replace("h=0", "h=1")
     miniIMiFrame.reload()
+}
+
+// 去工作台
+function goToClinet(){
+    window.open("http://aissz.com:666/admin/")
 }
 
 </script>

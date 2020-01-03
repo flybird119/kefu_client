@@ -641,7 +641,21 @@ export default {
                 }
               },
               error: function(){
-                uploadError()
+
+                // 失败后再次使用FormData上传
+                var formData = new FormData()
+                formData.append("fileType", "image")
+                formData.append("fileName", "file")
+                formData.append("key", fileName)
+                formData.append("token", self.uploadToken.secret)
+                formData.append("file", file)
+                axios.post("https://upload.qiniup.com", formData)
+                .then(()=>{
+                   uploadSuccess(imgUrl)
+                }).catch(()=>{
+                  uploadError()
+                })
+
               },
               complete: function(res){
                 uploadSuccess(res.key)
