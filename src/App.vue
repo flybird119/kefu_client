@@ -175,7 +175,7 @@
         
         <span class="photo-btn">
           <img src="./assets/photo_btn.png" alt="">
-          <input onClick="this.value = null" @change="changeFile" type="file" accept="image/*" />
+          <input onClick="this.value = null" @change="sendPhotoMessageEvent" type="file" accept="image/*" />
         </span>
         <span class="expression-btn" @click="showEmoji = !showEmoji">
           <img src="./assets/expression.png" alt="">
@@ -343,6 +343,9 @@ export default {
 
     // 判断是否被踢出对话
     this.onCheckIsOutSession()
+
+     // 粘贴事件
+    document.addEventListener("paste", this.inputPaste, false)
 
   },
   beforeDestroy(){
@@ -558,11 +561,15 @@ export default {
       this.chatValue  = this.chatValue + emoji 
       this.scrollIntoBottom()
     },
-    // 上传发送图片
-    changeFile(fileBety) {
-      var fileDom = fileBety.target;
-      var imgFile = new FileReader();
+    // 发送图片消息
+    sendPhotoMessageEvent(e){
+      var fileDom = e.target;
       var file = fileDom.files[0]
+      this.sendPhotoMessage(file)
+
+    },
+    sendPhotoMessage(file) {
+      var imgFile = new FileReader();
       imgFile.readAsDataURL(file)
       var self = this
       var localMessage
@@ -651,7 +658,7 @@ export default {
                 formData.append("file", file)
                 axios.post("https://upload.qiniup.com", formData)
                 .then(()=>{
-                   uploadSuccess(imgUrl)
+                   uploadSuccess(fileName)
                 }).catch(()=>{
                   uploadError()
                 })
@@ -979,6 +986,33 @@ export default {
         IM.sendMessage("search_knowledge", this.robotAccount, this.chatValue)
         this.searchHandshakeTimer = null
       },500)
+    },
+    // 输入框粘贴事件
+    inputPaste(e){
+      if(this.isMobile) return
+      let self = this
+      var cbd = e.clipboardData;
+      var ua = window.navigator.userAgent;
+      // Safari return
+      if ( !(e.clipboardData && e.clipboardData.items) ) {
+          return;
+      }
+      // Mac平台下Chrome49版本以下 复制Finder中的文件的Bug Hack掉
+      if(cbd.items && cbd.items.length === 2 && cbd.items[0].kind === "string" && cbd.items[1].kind === "file" &&
+          cbd.types && cbd.types.length === 2 && cbd.types[0] === "text/plain" && cbd.types[1] === "Files" &&
+          ua.match(/Macintosh/i) && Number(ua.match(/Chrome\/(\d{2})/i)[1]) < 49){
+          return;
+      }
+      for(var i = 0; i < cbd.items.length; i++) {
+          var item = cbd.items[i];
+          if(item.kind == "file"){
+              var file = item.getAsFile();
+              if (file.size === 0) {
+                  return;
+              }
+              self.sendPhotoMessage(file)
+          }
+      }
     }
   },
   watch: {
