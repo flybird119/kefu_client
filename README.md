@@ -6,7 +6,8 @@
 
 ## 本项目关联GIT项目资源连接
 - **[服务端][1]** 
-- **[客服端][2]** 
+- **[客服端-APP工作台][6]**      客服端APP工作台flutter源码
+- **[客服端-网页工作台][2]** 
 - **[客户端H5][3]**
 - **[客户端Flutter][4]**
 
@@ -57,3 +58,4 @@ npm add webpack@latest  OK
   [3]: https://github.com/chenxianqi/kefu_client
   [4]: https://github.com/chenxianqi/kefu_flutter
   [5]: http://kf.aissz.com:666/example/
+  [6]: https://github.com/chenxianqi/kefu_workbench
