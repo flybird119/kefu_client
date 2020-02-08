@@ -737,8 +737,6 @@ export default {
       if(message.biz_type == "transfer"){
         this.isArtificial = true
         this.artificialAccount = message.transfer_account
-        const IM = this.$mimcInstance
-        IM.sendMessage("handshake", message.transfer_account, "")
         var admin = JSON.parse(message.payload)
         localStorage.setItem("admin_" + admin.id, JSON.stringify(admin))
         localStorage.setItem("adminLastCallBackMessageTime_" + admin.id, Date.now())
