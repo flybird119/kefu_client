@@ -25,8 +25,10 @@
             width: 100%;
             height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: flex-end;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-content: center;
+            align-items: center;
             padding-bottom: 20px;
             box-sizing: border-box;
             position: absolute;
@@ -34,6 +36,10 @@
             left: 0;
             right: 0;
             margin: 0 auto;
+        }
+        .mini-im div{
+            margin-bottom: 10px;
+            display: flex;
         }
         button{
             width: 120px;
@@ -361,20 +367,22 @@
         <iframe id="miniIMiFrame" height="100%" width="100%" frameborder="0"></iframe>
     </div>
     <div class="mini-im">
-        <button onclick="location.href = 'http://kf.aissz.com:666/static/app/kefu_workbench.apk'">工作台(Android)</button>
-        <button onclick="location.href = 'http://kf.aissz.com:666/static/app/linux-0.0.1.AppImage'">工作台(linux)</button>
-        <button onclick="location.href = 'http://kf.aissz.com:666/static/app/mac-0.0.1.dmg'">工作台(mac)</button>
-        <button onclick="location.href = 'http://kf.aissz.com:666/static/app/win-0.0.1.exe'">工作台(window)</button>
-        <button onclick="goToClinet()">工作台(网页)</button>
-        <button style="color: red" onclick="location.href = 'http://kf.aissz.com:666/static/app/app-release.apk'">客户端demo(Android)</button>
-    </div>
-    <div class="mini-im"  style="padding-bottom: 60px;">
-        <button onclick="hiddenHeadder()">隐藏Header</button>
-        <button onclick="showHeadder()">显示Header</button>
-        <button onclick="verticalScreen()">移动端坚屏</button>
-        <button onclick="horizontalScreen()">横屏PAD</button>
-        <button onclick="show()">展开PC客服</button>
-        <button onclick="hide()">收起PC客服</button>
+        <div>
+            <button onclick="location.href = 'http://kf.aissz.com:666/static/app/kefu_workbench.apk'">工作台(Android)</button>
+            <button onclick="location.href = 'http://kf.aissz.com:666/static/app/linux-0.0.1.AppImage'">工作台(linux)</button>
+            <button onclick="location.href = 'http://kf.aissz.com:666/static/app/mac-0.0.1.dmg'">工作台(mac)</button>
+            <button onclick="location.href = 'http://kf.aissz.com:666/static/app/win-0.0.1.exe'">工作台(window)</button>
+            <button onclick="goToClinet()">工作台(网页)</button>
+            <button style="color: red" onclick="location.href = 'http://kf.aissz.com:666/static/app/app-release.apk'">客户端demo(Android)</button>
+        </div>
+        <div>
+            <button onclick="hiddenHeadder()">隐藏Header</button>
+            <button onclick="showHeadder()">显示Header</button>
+            <button onclick="verticalScreen()">移动端坚屏</button>
+            <button onclick="horizontalScreen()">横屏PAD</button>
+            <button onclick="show()">展开PC客服</button>
+            <button onclick="hide()">收起PC客服</button>
+        </div>
     </div>
 
     <div class="fix-bottom">
