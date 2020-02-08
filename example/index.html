@@ -36,7 +36,7 @@
             margin: 0 auto;
         }
         button{
-            width: 100px;
+            width: 120px;
             height: 35px;
             border-radius: 3px;
             margin: 0 10px;
@@ -360,9 +360,15 @@
     <div class="mini-im-m" id="miniIMiFrameBox">
         <iframe id="miniIMiFrame" height="100%" width="100%" frameborder="0"></iframe>
     </div>
-
     <div class="mini-im">
-        <button onclick="goToClinet()">客服工作台</button>
+        <button onclick="location.href = 'http://kf.aissz.com:666/static/app/kefu_workbench.apk'">工作台(Android)</button>
+        <button onclick="location.href = 'http://kf.aissz.com:666/static/app/linux-0.0.1.AppImage'">工作台(linux)</button>
+        <button onclick="location.href = 'http://kf.aissz.com:666/static/app/mac-0.0.1.dmg'">工作台(mac)</button>
+        <button onclick="location.href = 'http://kf.aissz.com:666/static/app/win-0.0.1.exe'">工作台(window)</button>
+        <button onclick="goToClinet()">工作台(网页)</button>
+        <button style="color: red" onclick="location.href = 'http://kf.aissz.com:666/static/app/app-release.apk'">客户端demo(Android)</button>
+    </div>
+    <div class="mini-im"  style="padding-bottom: 60px;">
         <button onclick="hiddenHeadder()">隐藏Header</button>
         <button onclick="showHeadder()">显示Header</button>
         <button onclick="verticalScreen()">移动端坚屏</button>
